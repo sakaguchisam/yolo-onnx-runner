@@ -1,9 +1,7 @@
 import onnxruntime as ort
 import numpy as np
 import cv2
-import os # Still needed for model path validation
 import ast # For literal_eval to parse metadata strings
-import matplotlib.pyplot as plt # For plotting in Results
 from typing import Union, List, Tuple # For type hinting
 
 class YOLO:
