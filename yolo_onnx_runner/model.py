@@ -3,7 +3,18 @@ import numpy as np
 import cv2
 import ast # For literal_eval to parse metadata strings
 from typing import Union, List, Tuple # For type hinting
+import os
 
+def generate_colors(num_classes):
+    # Generate distinct colors using HSV color space and convert to BGR
+    colors = []
+    for i in range(num_classes):
+        hue = int(180 * i / num_classes)  # OpenCV uses hue from 0–179
+        hsv_color = np.uint8([[[hue, 255, 255]]])  # Full saturation and value
+        bgr_color = cv2.cvtColor(hsv_color, cv2.COLOR_HSV2BGR)[0][0]
+        colors.append(tuple(int(c) for c in bgr_color))
+    return colors
+    
 class YOLO:
     """
     Performs inference and post-processing for YOLOv8 Segmentation models
@@ -72,7 +83,7 @@ class YOLO:
             # Generate distinct colors for each class if needed, or use a fixed palette
             num_classes = len(self.names)
             # Simple color generation for demonstration using viridis colormap:
-            colors = [plt.cm.viridis(i / num_classes)[:3] for i in range(num_classes)] # Get RGB (0-1)
+            colors = generate_colors(num_classes)  # List of BGR tuples
             colors = [(int(c[2]*255), int(c[1]*255), int(c[0]*255)) for c in colors] # Convert to BGR int (0-255)
 
             # Draw masks first (potentially blended underneath boxes/contours)
