@@ -84,7 +84,6 @@ class YOLO:
             num_classes = len(self.names)
             # Simple color generation for demonstration using viridis colormap:
             colors = generate_colors(num_classes)  # List of BGR tuples
-            colors = [(int(c[2]*255), int(c[1]*255), int(c[0]*255)) for c in colors] # Convert to BGR int (0-255)
 
             # Draw masks first (potentially blended underneath boxes/contours)
             if show_masks and self.masks:
