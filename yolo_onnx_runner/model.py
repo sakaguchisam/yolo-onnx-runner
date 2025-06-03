@@ -262,7 +262,8 @@ class YOLO:
                     self.mask_coeffs_len = output1_shape[1] # Should be 32 for standard YOLOv8-Seg
                 else:
                     print(f"Warning: Second output shape {output1_shape} is not 4D. Assuming 32 mask coefficients.")
-                    self.mask_coeffs_len = 32 # Fallback guess
+                    #self.mask_coeffs_len = 32 # Fallback guess
+                    pass
 
             # Dynamically determine number of classes
             # Shape is (batch, box[4] + classes[N] + mask_coeffs[M], proposals)
