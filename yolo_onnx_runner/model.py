@@ -256,7 +256,6 @@ class YOLO:
                 print("Warning: Model has fewer than 2 outputs. Expected format: [predictions, mask_prototypes]. Mask reconstruction might fail.")
                 # Attempt to get shape info even if outputs are few
                 output0_shape = model_outputs[0].shape # e.g., [1, 116, 8400]
-                self.mask_coeffs_len = 32 # Fallback guess
             else:
                 output0_shape = model_outputs[0].shape # e.g., [1, 116, 8400] or [1, 37, 8400]
                 output1_shape = model_outputs[1].shape # e.g., [1, 32, 160, 160]
