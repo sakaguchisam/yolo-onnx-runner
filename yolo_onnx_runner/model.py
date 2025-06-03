@@ -389,27 +389,27 @@ class YOLO:
         dh = preprocess_info["dh"]
 
         # Expecting two outputs: predictions and mask prototypes
-        if len(outputs) < 2:
-            print("Error: Expected at least 2 outputs from the model for segmentation postprocessing.")
-            return [], [], [], [] # Return empty lists
+        #if len(outputs) < 2:
+        #    print("Error: Expected at least 2 outputs from the model for segmentation postprocessing.")
+        #    return [], [], [], [] # Return empty lists
 
         predictions = outputs[0] # Shape (1, 4+N+M, 8400) e.g., (1, 116, 8400)
-        mask_prototypes = outputs[1] # Shape (1, M, proto_h, proto_w) e.g., (1, 32, 160, 160)
+        # mask_prototypes = outputs[1] # Shape (1, M, proto_h, proto_w) e.g., (1, 32, 160, 160)
 
         # Check shapes (add batch dimension checks)
-        if predictions.shape[0] != 1 or mask_prototypes.shape[0] != 1:
-             print(f"Warning: Expected batch size 1, but got predictions shape {predictions.shape} and prototypes shape {mask_prototypes.shape}. Processing first batch element only.")
+        if predictions.shape[0] != 1: 
+             print(f"Warning: Expected batch size 1, but got predictions shape {predictions.shape}. Processing first batch element only.")
              # Or raise error if batch > 1 needs special handling
 
         # Remove batch dim for easier processing
         predictions = predictions[0] # (4+N+M, 8400)
-        mask_prototypes = mask_prototypes[0] # (M, proto_h, proto_w)
+        # mask_prototypes = mask_prototypes[0] # (M, proto_h, proto_w)
 
 
         # Check if mask_prototypes shape is valid after removing batch dim
-        if len(mask_prototypes.shape) != 3 or mask_prototypes.shape[0] != self.mask_coeffs_len:
-             print(f"Warning: Mask prototypes shape {mask_prototypes.shape} unexpected after removing batch dim. Expected ({self.mask_coeffs_len}, H, W). Mask reconstruction might fail.")
-             mask_prototypes = None # Disable mask processing
+        #if len(mask_prototypes.shape) != 3 or mask_prototypes.shape[0] != self.mask_coeffs_len:
+        #     print(f"Warning: Mask prototypes shape {mask_prototypes.shape} unexpected after removing batch dim. Expected ({self.mask_coeffs_len}, H, W). Mask reconstruction might fail.")
+        #     mask_prototypes = None # Disable mask processing
 
         # Transpose predictions: (4+N+M, 8400) -> (8400, 4+N+M)
         detections = np.transpose(predictions) # (8400, 4+N+M)
@@ -422,6 +422,7 @@ class YOLO:
         # Precompute mask prototype reshaping if shape is valid
         mask_proto_reshaped = None
         proto_h, proto_w = 0, 0
+        mask_prototypes = None
         if mask_prototypes is not None:
             proto_h, proto_w = mask_prototypes.shape[1:] # e.g., 160, 160
             # (M, proto_h*proto_w)
