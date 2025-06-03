@@ -175,7 +175,6 @@ class YOLO:
         self.input_width = 640 # Default values, will be updated from model
         self.input_height = 640 # Default values, will be updated from model
         self.num_classes = 0 # Will be updated
-        self.mask_coeffs_len = 32 # Default, will be updated
 
         try:
             # Create ONNX Runtime session
